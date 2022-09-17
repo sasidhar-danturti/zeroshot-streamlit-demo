@@ -33,7 +33,9 @@ def get_qa_model():
 
     qa_pipeline = pipeline('question-answering', model=model_name, tokenizer=model_name)
     return qa_pipeline
-    
+
+sentiment_extractor   = get_sentiment_model()
+
 review = st.text_area("")
 
 if review:
