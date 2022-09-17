@@ -35,6 +35,8 @@ def get_qa_model():
     return qa_pipeline
 
 sentiment_extractor   = get_sentiment_model()
+summarizer = get_summarizer_model()
+answer_generator = get_qa_model()
 
 review = st.text_area("")
 
