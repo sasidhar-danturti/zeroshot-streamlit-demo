@@ -16,7 +16,7 @@ def get_sentiment_model():
     return sentiment_model 
 
 def get_summarizer_model():
-    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+    summarizer = pipeline("summarization", model="mrm8488/t5-base-finetuned-imdb-sentiment")
     return summarizer
 
       
@@ -29,7 +29,7 @@ def get_sentiment(text):
     
 
 def get_qa_model():
-    model_name = "deepset/roberta-base-squad2"
+    model_name = "mrm8488/t5-base-finetuned-imdb-sentiment"
 
     qa_pipeline = pipeline('question-answering', model=model_name, tokenizer=model_name)
     return qa_pipeline
