@@ -8,7 +8,7 @@ st.set_page_config(layout="wide")
 
 @st.cache(allow_output_mutation = True)
 def get_classifier_model():
-    return pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+    return pipeline("zero-shot-classification", model="models/bart-large-mnli")
     #return pipeline("zero-shot-classification",model="sentence-transformers/paraphrase-MiniLM-L6-v2")
 
 
