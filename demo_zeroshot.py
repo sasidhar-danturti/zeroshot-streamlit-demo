@@ -6,9 +6,16 @@ import pandas as pd
 
 st.set_page_config(layout="wide")
 
+@st.cache(allow_output_mutation = True)
 def get_classifier_model():
-    return pipeline("zero-shot-classification",
-             model="facebook/bart-large-mnli")
+    # return pipeline("zero-shot-classification",
+    #          model="facebook/bart-large-mnli")
+    return pipeline("zero-shot-classification",model="sentence-transformers/paraphrase-MiniLM-L6-v2")
+
+
+#st.sidebar.image("Suncorp-Bank-logo.png",width=255)
+
+st.image("Suncorp-Bank-logo.png",width=255)
 
 st.title("Detecting Barriers from Conversations")
 st.markdown("***")
@@ -35,28 +42,42 @@ st.markdown("***")
 
 classify_button_clicked = st.button("Classify")
 
+def get_classification(candidate_labels):
+    classification_output = classifier(sequence_to_classify, candidate_labels, multi_class=is_multi_class)
+    data = {'Class': classification_output['labels'], 'Scores': classification_output['scores']}
+    df = pd.DataFrame(data)
+    df = df.sort_values(by='Scores', ascending=False)
+    fig = px.bar(df, x='Scores', y='Class', orientation='h', width=800, height=800)
+    fig.update_layout(
+        yaxis=dict(
+            autorange='reversed'
+        )
+    )
+    return fig
+
 if classify_button_clicked:
     if text:
         st.markdown("***")
         with st.spinner("  Please wait while the text is being classified.."):
             classifier = get_classifier_model()
             sequence_to_classify = text
-            candidate_labels = sentiments + entities + reasons
-            if candidate_labels:
-                classification_output = classifier(sequence_to_classify, candidate_labels,multi_class=is_multi_class)
+            # candidate_labels = sentiments + entities + reasons
+
+            if sentiments:
                 #print(classification_output)
-                data = {'Class':classification_output['labels'],'Scores':classification_output['scores']}
-                df = pd.DataFrame(data)
-                df = df.sort_values(by='Scores',ascending=False)
-                fig = px.bar(df, x='Scores', y='Class', orientation='h',width=800, height=800)
-                fig.update_layout(
-                    yaxis=dict(
-                        autorange='reversed'
-                    )
-                )
-                col5, col6= st.columns((1, 1))
+                fig = get_classification(sentiments)
+                # col5, col6= st.columns((1, 1))
+                col1.write(fig)
 
-                col5.write(fig)
+            if entities:
+                #print(classification_output)
+                fig = get_classification(entities)
+                # col7, col8= st.columns((1, 1))
+                col2.write(fig)
 
-
+            if reasons:
+                #print(classification_output)
+                fig = get_classification(reasons)
+                # col7, col8= st.columns((1, 1))
+                col3.write(fig)
 
