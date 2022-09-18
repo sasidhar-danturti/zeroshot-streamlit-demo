@@ -8,9 +8,8 @@ st.set_page_config(layout="wide")
 
 @st.cache(allow_output_mutation = True)
 def get_classifier_model():
-    # return pipeline("zero-shot-classification",
-    #          model="facebook/bart-large-mnli")
-    return pipeline("zero-shot-classification",model="sentence-transformers/paraphrase-MiniLM-L6-v2")
+    return pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+    #return pipeline("zero-shot-classification",model="sentence-transformers/paraphrase-MiniLM-L6-v2")
 
 
 #st.sidebar.image("Suncorp-Bank-logo.png",width=255)
